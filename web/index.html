@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Management System</title>
+    <style>
+        /* CSS Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #001f3f; /* Navy blue background */
+            color: #fff; /* White font color */
+        }
+
+        /* Header styles */
+        header {
+            background-color: #003366; /* Darker navy blue header */
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            color: #2e8b57; /* Parrot green font color for National Bank */
+        }
+
+        /* Page content styles */
+        .page {
+            display: none;
+            padding: 20px;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        h2 {
+            color: #fff; /* White font color for headings */
+            text-align: center;
+        }
+
+        nav {
+            margin-top: 20px;
+        }
+
+        nav a {
+            color: #fff; /* White font color for navigation links */
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #005b96; /* Darker navy blue on hover */
+        }
+
+        /* Form styles */
+        form {
+            max-width: 500px;
+            margin: 0 auto; /* Center align the form */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        input[type="submit"] {
+            background-color: #2e8b57; /* Parrot green submit button */
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2e764d; /* Darker parrot green on hover */
+        }
+
+        /* Payment status message */
+        #payment-status {
+            text-align: center;
+            display: none;
+        }
+
+        /* Slideshow container */
+        .slideshow-container {
+            max-width: 1000px;
+            position: relative;
+            margin: auto;
+            margin-top: 20px;
+        }
+
+        .slideshow-container img {
+            width: 100%;
+            height: auto;
+        }
+
+        .slideshow-container .prev,
+        .slideshow-container .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: auto;
+            padding: 16px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+        }
+
+        .slideshow-container .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        .slideshow-container .prev:hover,
+        .slideshow-container .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Customer list styles */
+        .customer-list {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        .customer-list li {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 5px;
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .customer-list li strong {
+            color: #2e8b57; /* Parrot green font color for customer details */
+        }
+
+        /* Box styles for tables */
+        .box {
+            border: 2px solid #2e8b57;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            overflow-x: auto; /* Enable horizontal scroll if needed */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #2e8b57;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #2e8b57;
+            color: white;
+        }
+
+        /* Payment status styles */
+        .success {
+            color: #2e8b57;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with navigation links -->
+    <header>
+        <h1>National Bank</h1> <!-- Updated title with parrot green font color -->
+        <nav>
+            <a href="#" onclick="showPage('welcome')">Home</a>
+            <a href="#" onclick="showPage('view-customers')">View All Customers</a>
+            <a href="#" onclick="showPage('transfer-money')">Transfer Money</a>
+            <a href="#" onclick="showPage('transaction-history')">Transaction History</a> <!-- Added link to transaction history -->
+        </nav>
+    </header>
+
+    <!-- Welcome Page -->
+    <section id="welcome" class="page active">
+        <!-- Welcome Page content -->
+        <h2>Welcome to the Customer Management System</h2>
+        <!-- Slideshow container -->
+        <div class="slideshow-container">
+            <!-- Slides -->
+            <div class="mySlides fade">
+                <img src="image\image1.jpeg" alt="Slide 1">
+            </div>
+
+            <div class="mySlides fade">
+                <img src="image\image2.jpeg" alt="Slide 2">
+            </div>
+
+            <div class="mySlides fade">
+                <img src="image\image3.jpeg" alt="Slide 3">
+            </div>
+
+            <!-- Previous and Next buttons -->
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        </div>
+    </section>
+
+    <!-- View All Customers Page -->
+    <section id="view-customers" class="page">
+        <!-- View All Customers Page content -->
+        <h2 style="text-align: center;">View All Customers</h2>
+        <!-- Customer list table -->
+        <div class="box">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Current Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>John Doe</td>
+                        <td>john.doe@example.com</td>
+                        <td>$5000.00</td>
+                    </tr>
+                    <tr>
+                        <td>Jane Smith</td>
+                        <td>jane.smith@example.com</td>
+                        <td>$7000.00</td>
+                    </tr>
+                    <tr>
+                        <td>Alice Johnson</td>
+                        <td>alice.johnson@example.com</td>
+                        <td>$3000.00</td>
+                    </tr>
+                    <tr>
+                        <td>Bob Williams</td>
+                        <td>bob.williams@example.com</td>
+                        <td>$4000.00</td>
+                    </tr>
+                    <tr>
+                        <td>Emily Brown</td>
+                        <td>emily.brown@example.com</td>
+                        <td>$6000.00</td>
+                    </tr>
+                    <tr>
+                        <td>Michael Davis</td>
+                        <td>michael.davis@example.com</td>
+                        <td>$4500.00</td>
+                    </tr>
+                    <tr>
+                        <td>Sarah Wilson</td>
+                        <td>sarah.wilson@example.com</td>
+                        <td>$5500.00</td>
+                    </tr>
+                    <tr>
+                        <td>David Martinez</td>
+                        <td>david.martinez@example.com</td>
+                        <td>$3500.00</td>
+                    </tr>
+                    <tr>
+                        <td>Laura Miller</td>
+                        <td>laura.miller@example.com</td>
+                        <td>$4800.00</td>
+                    </tr>
+                    <tr>
+                        <td>James Taylor</td>
+                        <td>james.taylor@example.com</td>
+                        <td>$5200.00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Transfer Money Page -->
+    <section id="transfer-money" class="page">
+        <!-- Transfer Money Page content -->
+        <h2>Transfer Money</h2>
+        <!-- Transfer money form -->
+        <form id="transfer-form" onsubmit="return transferMoney()">
+            <label for="sender">Sender:</label>
+            <select id="sender" name="sender">
+                <!-- Populate sender picklist with customer names -->
+                <option value="John Doe">John Doe</option>
+                <option value="Jane Smith">Jane Smith</option>
+                <option value="Alice Johnson">Alice Johnson</option>
+                <option value="Bob Williams">Bob Williams</option>
+                <option value="Emily Brown">Emily Brown</option>
+                <option value="Michael Davis">Michael Davis</option>
+                <option value="Sarah Wilson">Sarah Wilson</option>
+                <option value="David Martinez">David Martinez</option>
+                <option value="Laura Miller">Laura Miller</option>
+                <option value="James Taylor">James Taylor</option>
+            </select><br>
+
+            <label for="recipient">Recipient:</label>
+            <select id="recipient" name="recipient">
+                <!-- Populate recipient picklist with customer names -->
+                <option value="John Doe">John Doe</option>
+                <option value="Jane Smith">Jane Smith</option>
+                <option value="Alice Johnson">Alice Johnson</option>
+                <option value="Bob Williams">Bob Williams</option>
+                <option value="Emily Brown">Emily Brown</option>
+                <option value="Michael Davis">Michael Davis</option>
+                <option value="Sarah Wilson">Sarah Wilson</option>
+                <option value="David Martinez">David Martinez</option>
+                <option value="Laura Miller">Laura Miller</option>
+                <option value="James Taylor">James Taylor</option>
+            </select><br>
+
+            <label for="amount">Amount:</label>
+            <input type="text" id="amount" name="amount" placeholder="Enter amount"><br>
+
+            <button type="submit">Transfer Money</button> <!-- Changed to a button for better control -->
+
+            <!-- Payment status message -->
+            <div id="payment-status"></div>
+        </form>
+    </section>
+
+    <!-- Transaction History Page -->
+    <section id="transaction-history" class="page">
+        <!-- Transaction History Page content -->
+        <h2>Transaction History</h2>
+        <!-- Transaction history table -->
+        <div class="box">
+            <table id="transaction-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Sender</th>
+                        <th>Recipient</th>
+                        <th>Amount</th>
+                        <th>Balance</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Transaction records will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Customer Management System</p>
+    </footer>
+
+    <script>
+        // JavaScript code for slideshow functionality
+        var slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) {slideIndex = 1}
+            slides[slideIndex-1].style.display = "block";
+            setTimeout(showSlides, 2000); // Change image every 2 seconds
+        }
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        // Function to handle transfer money
+        function transferMoney() {
+            var sender = document.getElementById("sender").value;
+            var recipient = document.getElementById("recipient").value;
+            var amount = parseFloat(document.getElementById("amount").value);
+            var senderBalance = getCustomerBalance(sender);
+            var recipientBalance = getCustomerBalance(recipient);
+
+            // Check if sender has enough balance and amount is valid
+            if (senderBalance >= amount && amount > 0) {
+                // Deduct amount from sender's balance
+                updateCustomerBalance(sender, senderBalance - amount);
+                // Add amount to recipient's balance
+                updateCustomerBalance(recipient, recipientBalance + amount);
+
+                // Update transaction history
+                var currentDate = new Date().toLocaleDateString();
+                addTransactionToHistory(currentDate, sender, recipient, amount, senderBalance - amount, "success");
+
+                // Show success message
+                showPaymentStatus("Payment successful", "success");
+            } else {
+                // Show error message
+                showPaymentStatus("Payment failed. Insufficient balance or invalid amount.", "error");
+                // Update transaction history for failed transaction
+                addTransactionToHistory(currentDate, sender, recipient, amount, senderBalance, "error");
+            }
+
+            return false; // Prevent form submission
+        }
+
+        // Function to get customer's balance
+        function getCustomerBalance(customerName) {
+            switch (customerName) {
+                case "John Doe": return 5000.00;
+                case "Jane Smith": return 7000.00;
+                case "Alice Johnson": return 3000.00;
+                case "Bob Williams": return 4000.00;
+                case "Emily Brown": return 6000.00;
+                case "Michael Davis": return 4500.00;
+                case "Sarah Wilson": return 5500.00;
+                case "David Martinez": return 3500.00;
+                case "Laura Miller": return 4800.00;
+                case "James Taylor": return 5200.00;
+                default: return 0.00;
+            }
+        }
+
+        // Function to update customer's balance
+        function updateCustomerBalance(customerName, newBalance) {
+            // Update UI or backend data here
+        }
+
+        // Function to show payment status
+        function showPaymentStatus(message, status) {
+            var paymentStatus = document.getElementById("payment-status");
+            paymentStatus.textContent = message;
+            paymentStatus.className = status; // Set class for styling
+            paymentStatus.style.display = "block";
+            setTimeout(function() {
+                paymentStatus.style.display = "none";
+            }, 3000); // Hide after 3 seconds
+        }
+
+        // Function to add transaction to history
+        function addTransactionToHistory(date, sender, recipient, amount, balance, status) {
+            var transactionTable = document.getElementById("transaction-table").getElementsByTagName("tbody")[0];
+            var row = transactionTable.insertRow(0);
+            var cellDate = row.insertCell(0);
+            var cellSender = row.insertCell(1);
+            var cellRecipient = row.insertCell(2);
+            var cellAmount = row.insertCell(3);
+            var cellBalance = row.insertCell(4);
+            var cellStatus = row.insertCell(5);
+
+            cellDate.innerHTML = date;
+            cellSender.innerHTML = sender;
+            cellRecipient.innerHTML = recipient;
+            cellAmount.innerHTML = amount.toFixed(2);
+            cellBalance.innerHTML = balance.toFixed(2);
+            cellStatus.innerHTML = status.charAt(0).toUpperCase() + status.slice(1);
+            cellStatus.className = status; // Set class for styling
+        }
+
+        // Function to show the selected page
+        function showPage(pageId) {
+            var pages = document.getElementsByClassName("page");
+            for (var i = 0; i < pages.length; i++) {
+                pages[i].classList.remove("active");
+            }
+
+            document.getElementById(pageId).classList.add("active");
+        }
+    </script>
+</body>
+</html>

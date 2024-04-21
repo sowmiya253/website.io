@@ -1,0 +1,41 @@
+<!-- Transfer Money Page -->
+<section id="transfer-money" class="page">
+    <h2>Transfer Money</h2>
+    <!-- Transfer money form -->
+    <form id="transfer-form" action="transfer.php" method="post">
+        <label for="sender">Sender:</label>
+        <select id="sender" name="sender">
+            <?php
+            $sql = "SELECT name FROM customers";
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    echo "<option value='" . $row["name"] . "'>" . $row["name"] . "</option>";
+                }
+            }
+            ?>
+        </select><br>
+
+        <label for="recipient">Recipient:</label>
+        <select id="recipient" name="recipient">
+            <?php
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    echo "<option value='" . $row["name"] . "'>" . $row["name"] . "</option>";
+                }
+            }
+            ?>
+        </select><br>
+
+        <label for="amount">Amount:</label>
+        <input type="text" id="amount" name="amount" placeholder="Enter amount"><br>
+
+        <input type="submit" value="Transfer Money"> <!-- Changed to a button for better control -->
+
+        <!-- Payment status message -->
+        <div id="payment-status"></div>
+    </form>
+</section>
